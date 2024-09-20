@@ -16,8 +16,8 @@ import numpy as np
 import os
 import dagshub
 
-mlflow.set_tracking_uri('https://dagshub.com/campusx-official/mlops-mini-project.mlflow')
-dagshub.init(repo_owner='campusx-official', repo_name='mlops-mini-project', mlflow=True)
+dagshub.init(repo_owner='suryanshx25', repo_name='MLOps-Mini-Project', mlflow=True)
+mlflow.set_tracking_uri('https://dagshub.com/suryanshx25/MLOps-Mini-Project.mlflow')
 
 # Load the data
 # Load the data
