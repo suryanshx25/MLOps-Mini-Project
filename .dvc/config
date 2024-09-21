@@ -1,4 +1,4 @@
 [core]
     remote = myremote
 ['remote "myremote"']
-    url = C:\Users\surya\AppData\Local\Temp
+    url = s3://mlops-mini-bucket
