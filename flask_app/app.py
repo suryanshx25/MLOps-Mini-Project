@@ -3,20 +3,17 @@
 from flask import Flask, render_template,request
 import mlflow
 import pickle
+import os
 import pandas as pd
-from preprocessing_utility import normalize_text
 
 import numpy as np
+import pandas as pd
 import os
 import re
 import nltk
 import string
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-
-import dagshub
-dagshub.init(repo_owner='suryanshx25', repo_name='MLOps-Mini-Project', mlflow=True)
-mlflow.set_tracking_uri('https://dagshub.com/suryanshx25/MLOps-Mini-Project.mlflow')
 
 def lemmatization(text):
     """Lemmatize the text."""
@@ -60,7 +57,6 @@ def remove_small_sentences(df):
         if len(df.text.iloc[i].split()) < 3:
             df.text.iloc[i] = np.nan
 
-
 def normalize_text(text):
     text = lower_case(text)
     text = remove_stop_words(text)
@@ -70,6 +66,22 @@ def normalize_text(text):
     text = lemmatization(text)
 
     return text
+
+
+# Set up DagsHub credentials for MLflow tracking
+dagshub_token = os.getenv("DAGSHUB_PAT")
+if not dagshub_token:
+    raise EnvironmentError("DAGSHUB_PAT environment variable is not set")
+
+os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+
+dagshub_url = "https://dagshub.com"
+repo_owner = "suryanshx25"
+repo_name = "MLOps-Mini-Project"
+
+# Set up MLflow tracking URI
+mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
 app = Flask(__name__)
 
