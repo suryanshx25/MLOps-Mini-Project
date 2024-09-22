@@ -83,13 +83,13 @@ jobs:
           script: |
             aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws configure set default.region ap-southeast-2
+            aws configure set default.region eu-north-1
             aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 861276079369.dkr.ecr.eu-north-1.amazonaws.com
             docker pull 861276079369.dkr.ecr.eu-north-1.amazonaws.com/mlops_ecr:latest
             docker stop my-app || true
             docker rm my-app || true
             docker run -d -p 80:5000 -e DAGSHUB_PAT=${{ secrets.DAGSHUB_PAT }} --name mlops-app 861276079369.dkr.ecr.eu-north-1.amazonaws.com/mlops_ecr:latest
-             
+
 
 
 
