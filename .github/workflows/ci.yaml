@@ -61,17 +61,17 @@ jobs:
       - name: Build Docker image
         if: success()
         run: |
-          docker build -t mlops_ecr .
+          docker build -t ecrxec2_mlops .
 
       - name: Tag Docker image
         if: success()
         run: |
-          docker tag mlops_ecr:latest 861276079369.dkr.ecr.eu-north-1.amazonaws.com/mlops_ecr:latest
+          docker tag ecrxec2_mlops:latest 861276079369.dkr.ecr.eu-north-1.amazonaws.com/ecrxec2_mlops:latest
 
       - name: Push Docker image to AWS ECR
         if: success()
         run: |
-          docker push 861276079369.dkr.ecr.eu-north-1.amazonaws.com/mlops_ecr:latest
+          docker push 861276079369.dkr.ecr.eu-north-1.amazonaws.com/ecrxec2_mlops:latest
 
       - name: Deploy to EC2
         if: success()
@@ -85,7 +85,7 @@ jobs:
             aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws configure set default.region eu-north-1
             aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 861276079369.dkr.ecr.eu-north-1.amazonaws.com
-            docker pull 861276079369.dkr.ecr.eu-north-1.amazonaws.com/mlops_ecr:latest
+            docker pull 861276079369.dkr.ecr.eu-north-1.amazonaws.com/ecrxec2_mlops:latest
             docker stop my-app || true
             docker rm my-app || true
-            docker run -d -p 80:5000 -e DAGSHUB_PAT=${{ secrets.DAGSHUB_PAT }} --name mlops-app 861276079369.dkr.ecr.eu-north-1.amazonaws.com/mlops_ecr:latest
+            docker run -d -p 80:5000 -e DAGSHUB_PAT=${{ secrets.DAGSHUB_PAT }} --name mlops-app 861276079369.dkr.ecr.eu-north-1.amazonaws.com/ecrxec2_mlops:latest
